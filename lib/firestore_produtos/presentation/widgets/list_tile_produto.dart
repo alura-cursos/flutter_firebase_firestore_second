@@ -4,10 +4,13 @@ import '../../model/produto.dart';
 class ListTileProduto extends StatelessWidget {
   final Produto produto;
   final bool isComprado;
+  final Function showFormModal;
+
   const ListTileProduto({
     super.key,
     required this.produto,
     required this.isComprado,
+    required this.showFormModal,
   });
 
   @override
@@ -26,6 +29,9 @@ class ListTileProduto extends StatelessWidget {
             ? "Clique para adicionar preço"
             : "R\$ ${produto.price!}",
       ),
+      onTap: () {
+        showFormModal(model: produto);
+      },
     );
   }
 }
