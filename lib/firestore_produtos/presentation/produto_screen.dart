@@ -61,8 +61,7 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                   isDecrescente = false;
                 }
               });
-              print(ordem.name);
-              print(isDecrescente);
+              refresh();
             },
           )
         ],
@@ -310,7 +309,8 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
         .collection("listins")
         .doc(widget.listin.id)
         .collection("produtos")
-        .where("isComprado", isEqualTo: isComprado)
+        //.where("isComprado", isEqualTo: isComprado)
+        .orderBy(ordem.name, descending: isDecrescente)
         .get();
 
     for (var doc in snapshot.docs) {
