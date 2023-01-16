@@ -254,12 +254,23 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   }
 
   refresh() async {
+    List<Produto> tempPlanejados = await filtrarProdutos(false);
+    List<Produto> tempPegos = await filtrarProdutos(true);
+
+    setState(() {
+      listaProdutosPlanejados = tempPlanejados;
+      listaProdutosPegos = tempPegos;
+    });
+  }
+
+  Future<List<Produto>> filtrarProdutos(bool isComprado) async {
     List<Produto> temp = [];
 
     QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
         .collection("listins")
         .doc(widget.listin.id)
         .collection("produtos")
+        .where("isComprado", isEqualTo: isComprado)
         .get();
 
     for (var doc in snapshot.docs) {
@@ -267,8 +278,6 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
       temp.add(produto);
     }
 
-    setState(() {
-      listaProdutosPlanejados = temp;
-    });
+    return temp;
   }
 }
