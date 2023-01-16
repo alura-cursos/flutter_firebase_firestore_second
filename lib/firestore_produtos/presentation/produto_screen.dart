@@ -52,6 +52,18 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                 ),
               ];
             },
+            onSelected: (value) {
+              setState(() {
+                if (ordem == value) {
+                  isDecrescente = !isDecrescente;
+                } else {
+                  ordem = value;
+                  isDecrescente = false;
+                }
+              });
+              print(ordem.name);
+              print(isDecrescente);
+            },
           )
         ],
       ),
