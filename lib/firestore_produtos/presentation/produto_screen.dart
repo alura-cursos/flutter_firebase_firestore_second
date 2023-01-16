@@ -26,7 +26,6 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   @override
   void initState() {
     setupListeners();
-    refresh();
     super.initState();
   }
 
@@ -277,7 +276,6 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                           .set(produto.toMap());
 
                       // Atualizar a lista
-                      refresh();
 
                       // Fechar o Modal
                       Navigator.pop(context);
@@ -339,8 +337,6 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
         .collection("produtos")
         .doc(produto.id)
         .update({"isComprado": produto.isComprado});
-
-    refresh();
   }
 
   setupListeners() {
