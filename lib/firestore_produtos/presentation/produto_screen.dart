@@ -280,4 +280,17 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
 
     return temp;
   }
+
+  alternarComprado(Produto produto) async {
+    produto.isComprado = !produto.isComprado;
+
+    await firestore
+        .collection("listins")
+        .doc(widget.listin.id)
+        .collection("produtos")
+        .doc(produto.id)
+        .update({"isComprado": produto.isComprado});
+
+    refresh();
+  }
 }
