@@ -293,10 +293,10 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
     );
   }
 
-  refresh() async {
+  refresh({QuerySnapshot<Map<String, dynamic>>? snapshot}) async {
     List<Produto> temp = [];
 
-    QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
+    snapshot ??= await firestore
         .collection("listins")
         .doc(widget.listin.id)
         .collection("produtos")
@@ -352,7 +352,7 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
         .snapshots()
         .listen(
       (snapshot) {
-        print("MUDOU!");
+        refresh(snapshot: snapshot);
       },
     );
   }
