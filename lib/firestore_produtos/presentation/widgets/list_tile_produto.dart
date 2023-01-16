@@ -4,20 +4,30 @@ import '../../model/produto.dart';
 class ListTileProduto extends StatelessWidget {
   final Produto produto;
   final bool isComprado;
-  final Function showFormModal;
+  final Function showModal;
+  final Function iconClick;
 
   const ListTileProduto({
     super.key,
     required this.produto,
     required this.isComprado,
-    required this.showFormModal,
+    required this.showModal,
+    required this.iconClick,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(
-        (isComprado) ? Icons.shopping_basket : Icons.check,
+      onTap: () {
+        showModal(model: produto);
+      },
+      leading: IconButton(
+        onPressed: () {
+          iconClick(produto);
+        },
+        icon: Icon(
+          (isComprado) ? Icons.shopping_basket : Icons.check,
+        ),
       ),
       title: Text(
         (produto.amount == null)
@@ -29,9 +39,6 @@ class ListTileProduto extends StatelessWidget {
             ? "Clique para adicionar preço"
             : "R\$ ${produto.price!}",
       ),
-      onTap: () {
-        showFormModal(model: produto);
-      },
     );
   }
 }
