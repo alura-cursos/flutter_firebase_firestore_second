@@ -293,23 +293,13 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   }
 
   refresh() async {
-    List<Produto> tempPlanejados = await filtrarProdutos(false);
-    List<Produto> tempPegos = await filtrarProdutos(true);
-
-    setState(() {
-      listaProdutosPlanejados = tempPlanejados;
-      listaProdutosPegos = tempPegos;
-    });
-  }
-
-  Future<List<Produto>> filtrarProdutos(bool isComprado) async {
     List<Produto> temp = [];
 
     QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
         .collection("listins")
         .doc(widget.listin.id)
         .collection("produtos")
-        //.where("isComprado", isEqualTo: isComprado)
+        // .where("isComprado", isEqualTo: isComprado)
         .orderBy(ordem.name, descending: isDecrescente)
         .get();
 
@@ -318,7 +308,25 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
       temp.add(produto);
     }
 
-    return temp;
+    filtrarProdutos(temp);
+  }
+
+  filtrarProdutos(List<Produto> listaProdutos) {
+    List<Produto> tempPlanejados = [];
+    List<Produto> tempPegos = [];
+
+    for (var produto in listaProdutos) {
+      if (produto.isComprado) {
+        tempPegos.add(produto);
+      } else {
+        tempPlanejados.add(produto);
+      }
+    }
+
+    setState(() {
+      listaProdutosPegos = tempPegos;
+      listaProdutosPlanejados = tempPlanejados;
+    });
   }
 
   alternarComprado(Produto produto) async {
