@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../../firestore/models/listin.dart';
+import '../helpers/enum_order.dart';
 import '../model/produto.dart';
 import 'widgets/list_tile_produto.dart';
 
@@ -19,6 +20,9 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  OrdemProduto ordem = OrdemProduto.name;
+  bool isDecrescente = false;
+
   @override
   void initState() {
     refresh();
@@ -28,7 +32,29 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.listin.name)),
+      appBar: AppBar(
+        title: Text(widget.listin.name),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem(
+                  value: OrdemProduto.name,
+                  child: Text("Ordenar por nome"),
+                ),
+                const PopupMenuItem(
+                  value: OrdemProduto.amount,
+                  child: Text("Ordenar por quantidade"),
+                ),
+                const PopupMenuItem(
+                  value: OrdemProduto.price,
+                  child: Text("Ordenar por preço"),
+                ),
+              ];
+            },
+          )
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showFormModal();
