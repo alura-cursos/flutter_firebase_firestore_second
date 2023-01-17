@@ -27,10 +27,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Listin - Lista Colaborativa',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: MyColors.brown,
+        scaffoldBackgroundColor: MyColors.green,
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: MyColors.red,
+        ),
+        listTileTheme: const ListTileThemeData(
+          iconColor: MyColors.blue,
+        ),
+        appBarTheme: const AppBarTheme(
+          toolbarHeight: 72,
+          centerTitle: true,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(32),
+            ),
+          ),
+        ),
       ),
       home: const HomeScreen(),
     );
