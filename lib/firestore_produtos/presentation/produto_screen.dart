@@ -315,6 +315,8 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
         .orderBy(ordem.name, descending: isDecrescente)
         .get();
 
+    verificarAlteracao(snapshot);
+
     for (var doc in snapshot.docs) {
       Produto produto = Produto.fromMap(doc.data());
       temp.add(produto);
@@ -383,5 +385,36 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
       }
     }
     return total;
+  }
+
+  verificarAlteracao(QuerySnapshot<Map<String, dynamic>> snapshot) {
+    if (snapshot.docChanges.length == 1) {
+      for (DocumentChange docChange in snapshot.docChanges) {
+        String tipo = "";
+        Color cor = Colors.black;
+        switch (docChange.type) {
+          case DocumentChangeType.added:
+            tipo = "Novo Produto";
+            cor = Colors.green;
+            break;
+          case DocumentChangeType.modified:
+            tipo = "Produto alterado";
+            cor = Colors.orange;
+            break;
+          case DocumentChangeType.removed:
+            tipo = "Produto removido";
+            cor = Colors.red;
+            break;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: cor,
+            content: Text(
+              "$tipo: ${Produto.fromMap(docChange.doc.data() as Map<String, dynamic>).name}",
+            ),
+          ),
+        );
+      }
+    }
   }
 }
