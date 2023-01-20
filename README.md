@@ -20,10 +20,13 @@ Nesse projeto criaremos a base para o desenvolvimento de um Gerenciador de Lista
 
 ## ✔️ Técnicas e tecnologias utilizadas
 
-- `Adição no Firestore`: Adicionar informações no Banco de Dados do Firestore;
-- `Leitura com Firestore`: Ler manualmente informações do Banco de Dados do Firestore;
-- `Alteração com Firestore`: Alterar informações no Banco de Dados do Firestore;
-- `Remoção com Firestore`: Remover informações no Banco de Dados do Firestore;
+- `Importação e Adaptação de Telas`: Quando trabalhamos em um projeto real é natural que possamos receber uma parte dele já pronto, por exemplo, as telas para que possamos implementar os comportamentos com o Banco de Dados;
+- `Manipulação de Subcoleções`: Realizar operações em coleções que pertecem a documentos;
+- `Filtros com o Firestore`: Utilizar o método `.where()` para fazer consultas com filtros;
+- `Ordenação com o Firestore`: Utilizar o método `.orderBy()` para fazer consultas ordenadas;
+- `Leitura em tempo real`: Usar Streams para "ouvir" modificações no banco de dados;
+- `Melhorias visuais`: Tornar a aplicação mais profissional alterando o `ThemeData`;
+
 
 ## 📁 Acesso ao projeto
 
