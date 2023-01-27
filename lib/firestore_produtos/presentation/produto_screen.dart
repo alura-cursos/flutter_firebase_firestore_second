@@ -21,6 +21,7 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   List<Produto> listaProdutosPlanejados = [];
   List<Produto> listaProdutosPegos = [];
 
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   ProdutoService produtoService = ProdutoService();
 
   OrdemProduto ordem = OrdemProduto.name;
@@ -286,9 +287,6 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                         produto: produto,
                       );
 
-                      // Atualizar a lista
-                      //refresh();
-
                       // Fechar o Modal
                       Navigator.pop(context);
                     },
@@ -304,24 +302,16 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   }
 
   refresh({QuerySnapshot<Map<String, dynamic>>? snapshot}) async {
-    List<Produto> temp = [];
+    List<Produto> produtosResgatados = await produtoService.lerProdutos(
+        isDecrescente: isDecrescente,
+        listinId: widget.listin.id,
+        ordem: ordem,
+        snapshot: snapshot);
 
-    snapshot ??= await firestore
-        .collection("listins")
-        .doc(widget.listin.id)
-        .collection("produtos")
-        // .where("isComprado", isEqualTo: isComprado)
-        .orderBy(ordem.name, descending: isDecrescente)
-        .get();
-
-    verificarAlteracao(snapshot);
-
-    for (var doc in snapshot.docs) {
-      Produto produto = Produto.fromMap(doc.data());
-      temp.add(produto);
+    if (snapshot != null) {
+      verificarAlteracao(snapshot);
     }
-
-    filtrarProdutos(temp);
+    filtrarProdutos(produtosResgatados);
   }
 
   filtrarProdutos(List<Produto> listaProdutos) {
