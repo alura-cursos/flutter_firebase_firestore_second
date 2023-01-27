@@ -21,7 +21,6 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   List<Produto> listaProdutosPlanejados = [];
   List<Produto> listaProdutosPegos = [];
 
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
   ProdutoService produtoService = ProdutoService();
 
   OrdemProduto ordem = OrdemProduto.name;
@@ -344,12 +343,10 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   }
 
   removerProduto(Produto produto) async {
-    await firestore
-        .collection("listins")
-        .doc(widget.listin.id)
-        .collection("produtos")
-        .doc(produto.id)
-        .delete();
+    await produtoService.removerProduto(
+      produto: produto,
+      listinId: widget.listin.id,
+    );
   }
 
   double calcularPrecoPegos() {

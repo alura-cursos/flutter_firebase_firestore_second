@@ -70,4 +70,14 @@ class ProdutoService {
       },
     );
   }
+
+  Future<void> removerProduto(
+      {required Produto produto, required String listinId}) async {
+    return await firestore
+        .collection("listins")
+        .doc(listinId)
+        .collection("produtos")
+        .doc(produto.id)
+        .delete();
+  }
 }
