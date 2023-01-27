@@ -121,10 +121,11 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
               children: List.generate(listaProdutosPlanejados.length, (index) {
                 Produto produto = listaProdutosPlanejados[index];
                 return ListTileProduto(
+                  listinId: widget.listin.id,
                   produto: produto,
                   isComprado: false,
                   showModal: showFormModal,
-                  iconClick: alternarComprado,
+                  iconClick: produtoService.alternarComprado,
                   trailClick: removerProduto,
                 );
               }),
@@ -145,10 +146,11 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
               children: List.generate(listaProdutosPegos.length, (index) {
                 Produto produto = listaProdutosPegos[index];
                 return ListTileProduto(
+                  listinId: widget.listin.id,
                   produto: produto,
                   isComprado: true,
                   showModal: showFormModal,
-                  iconClick: alternarComprado,
+                  iconClick: produtoService.alternarComprado,
                   trailClick: removerProduto,
                 );
               }),
@@ -311,6 +313,7 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
     if (snapshot != null) {
       verificarAlteracao(snapshot);
     }
+
     filtrarProdutos(produtosResgatados);
   }
 
@@ -330,17 +333,6 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
       listaProdutosPegos = tempPegos;
       listaProdutosPlanejados = tempPlanejados;
     });
-  }
-
-  alternarComprado(Produto produto) async {
-    produto.isComprado = !produto.isComprado;
-
-    await firestore
-        .collection("listins")
-        .doc(widget.listin.id)
-        .collection("produtos")
-        .doc(produto.id)
-        .update({"isComprado": produto.isComprado});
   }
 
   setupListeners() {

@@ -16,12 +16,11 @@ class ProdutoService {
         .set(produto.toMap());
   }
 
-  Future<List<Produto>> lerProdutos({
-    required String listinId,
-    required OrdemProduto ordem,
-    required bool isDecrescente,
-    QuerySnapshot<Map<String, dynamic>>? snapshot,
-  }) async {
+  Future<List<Produto>> lerProdutos(
+      {required String listinId,
+      required OrdemProduto ordem,
+      required bool isDecrescente,
+      QuerySnapshot<Map<String, dynamic>>? snapshot}) async {
     List<Produto> temp = [];
 
     snapshot ??= await firestore
@@ -38,5 +37,16 @@ class ProdutoService {
     }
 
     return temp;
+  }
+
+  alternarComprado({required Produto produto, required String listinId}) async {
+    produto.isComprado = !produto.isComprado;
+
+    await firestore
+        .collection("listins")
+        .doc(listinId)
+        .collection("produtos")
+        .doc(produto.id)
+        .update({"isComprado": produto.isComprado});
   }
 }
