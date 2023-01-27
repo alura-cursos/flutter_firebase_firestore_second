@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_firebase_firestore_second/firestore_produtos/helpers/enum_order.dart';
@@ -48,5 +50,24 @@ class ProdutoService {
         .collection("produtos")
         .doc(produto.id)
         .update({"isComprado": produto.isComprado});
+  }
+
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>> conectarStream({
+    required Function onChange,
+    required String listinId,
+    required OrdemProduto ordem,
+    required bool isDecrescente,
+  }) {
+    return firestore
+        .collection("listins")
+        .doc(listinId)
+        .collection("produtos")
+        .orderBy(ordem.name, descending: isDecrescente)
+        .snapshots()
+        .listen(
+      (snapshot) {
+        onChange(snapshot: snapshot);
+      },
+    );
   }
 }

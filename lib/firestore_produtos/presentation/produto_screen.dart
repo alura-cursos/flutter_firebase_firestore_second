@@ -336,17 +336,11 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   }
 
   setupListeners() {
-    listener = firestore
-        .collection("listins")
-        .doc(widget.listin.id)
-        .collection("produtos")
-        .orderBy(ordem.name, descending: isDecrescente)
-        .snapshots()
-        .listen(
-      (snapshot) {
-        refresh(snapshot: snapshot);
-      },
-    );
+    listener = produtoService.conectarStream(
+        onChange: refresh,
+        listinId: widget.listin.id,
+        ordem: ordem,
+        isDecrescente: isDecrescente);
   }
 
   removerProduto(Produto produto) async {
