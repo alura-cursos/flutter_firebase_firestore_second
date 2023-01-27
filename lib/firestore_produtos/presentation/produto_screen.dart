@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_firestore_second/firestore_produtos/helpers/enum_order.dart';
+import 'package:flutter_firebase_firestore_second/firestore_produtos/services/produto_service.dart';
 import 'package:uuid/uuid.dart';
 import '../../firestore/models/listin.dart';
 import '../model/produto.dart';
@@ -20,7 +21,7 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   List<Produto> listaProdutosPlanejados = [];
   List<Produto> listaProdutosPegos = [];
 
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  ProdutoService produtoService = ProdutoService();
 
   OrdemProduto ordem = OrdemProduto.name;
   bool isDecrescente = false;
@@ -280,12 +281,10 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                       }
 
                       // Salvar no Firestore
-                      firestore
-                          .collection("listins")
-                          .doc(widget.listin.id)
-                          .collection("produtos")
-                          .doc(produto.id)
-                          .set(produto.toMap());
+                      produtoService.adicionarProduto(
+                        listinId: widget.listin.id,
+                        produto: produto,
+                      );
 
                       // Atualizar a lista
                       //refresh();
